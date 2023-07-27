@@ -60,14 +60,14 @@ class NaiveBayesUevora:
                 PBA = 1
                 for attribute, property in zip(self.columns, test):
                     if property not in n.unique(self.aTraining[attribute]):
-                        self.add_property(attribute, property)
+                        self.add_unfound_property(attribute, property)
                     PBA *= self.PAB[attribute][property][yValue]
                 possibleResults[yValue] = PBA * PA
             result = max(possibleResults, key=lambda x: possibleResults[x])
             results.append(result)
         return n.array(results)
 
-    def add_property(self, attribute, property):
+    def add_unfound_property(self, attribute, property):
         self.PAB[attribute][property] = {}
         for yValue in n.unique(self.bTraining):
             self.PAB[attribute][property][yValue] = 0
