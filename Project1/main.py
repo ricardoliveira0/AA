@@ -20,7 +20,7 @@ print(f'Precisão: {nba.precision_score(x1, y1)}')
 print(f'Exatidão: {nba.accuracy_score(x1, y1)}')
 
 
-print("\t Teste2")
+print("\n\t Teste2")
 nba = NaiveBayesUevora.NaiveBayesUevora()
 file = p.read_csv("assets/breast-cancer-train2.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
@@ -36,7 +36,8 @@ for q, r in zip(n.array(x1), nba.predict(x1)):
 print(f'Precisão: {nba.precision_score(x1, y1)}')
 print(f'Exatidão: {nba.accuracy_score(x1, y1)}')
 
-print("\t Teste3")
+
+print("\n\t Teste3")
 nba = NaiveBayesUevora.NaiveBayesUevora()
 file = p.read_csv("assets/weather-nominal.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column

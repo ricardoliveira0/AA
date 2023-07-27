@@ -5,7 +5,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 class NaiveBayesUevora:
     alpha = float
-    
+
     def __init__(self, alpha = 0):
         self.alpha = alpha
         self.columns = list
@@ -17,39 +17,39 @@ class NaiveBayesUevora:
         self.bTraining = n.array
         self.sizeTraining = int
         self.noColumns = int
-        
+
     def fit(self, x, y):
         self.columns = list(x.columns) # Classes
         self.aTraining = x # Todas as classes excepto a última
         self.bTraining = y # Apenas a última
         self.sizeTraining = x.shape[0] # Nro de linhas
         self.noColumns = x.shape[1] # Nro de classes
-        for atributo in self.columns:
-            self.PAB[atributo] = {}
-            self.PA[atributo] = {}
-            self.noProperties[atributo] = len(n.unique(self.aTraining[atributo]))
-            
-            for xValue in n.unique(self.aTraining[atributo]):
-                self.PA[atributo][xValue] = 0
-                self.PAB[atributo][xValue] = {}
+        for attribute in self.columns:
+            self.PAB[attribute] = {}
+            self.PA[attribute] = {}
+            self.noProperties[attribute] = len(n.unique(self.aTraining[attribute]))
+
+            for xValue in n.unique(self.aTraining[attribute]):
+                self.PA[attribute][xValue] = 0
+                self.PAB[attribute][xValue] = {}
                 
                 for yValue in n.unique(self.bTraining):
-                    self.PAB[atributo][xValue][yValue] = 0
+                    self.PAB[attribute][xValue][yValue] = 0
                     self.classes[yValue] = 0
-                    
+
         # P(A)
         for yValue in n.unique(self.bTraining):
             noOcorencias = sum(self.bTraining == yValue)
             self.classes[yValue] = (noOcorencias + self.alpha) / (self.sizeTraining + (self.alpha * len(n.unique(self.bTraining))))
-            
+
         # P(B|A)
-        for atributo in self.columns:
+        for attribute in self.columns:
             for yValue in n.unique(self.bTraining):
                 noOcorenciasY = sum(self.bTraining == yValue)
-                noOcorenciasXY = self.aTraining[atributo][self.bTraining[self.bTraining == yValue].index.values.tolist()].value_counts().to_dict()
+                noOcorenciasXY = self.aTraining[attribute][self.bTraining[self.bTraining == yValue].index.values.tolist()].value_counts().to_dict()
                 for xyValue, noOcorencias in noOcorenciasXY.items():
-                    self.PAB[atributo][xyValue][yValue] = (noOcorencias + self.alpha) / (noOcorenciasY + (self.alpha * self.noProperties[atributo]))
-                    
+                    self.PAB[attribute][xyValue][yValue] = (noOcorencias + self.alpha) / (noOcorenciasY + (self.alpha * self.noProperties[attribute]))
+
     def predict(self, x):
         results = []
         x = n.array(x)
@@ -58,27 +58,27 @@ class NaiveBayesUevora:
             for yValue in n.unique(self.bTraining):
                 PA = self.classes[yValue]
                 PBA = 1
-                for atributo, property in zip(self.columns, test):
-                    if property not in n.unique(self.aTraining[atributo]):
-                        self.add_property(atributo, property)
-                    PBA *= self.PAB[atributo][property][yValue]
+                for attribute, property in zip(self.columns, test):
+                    if property not in n.unique(self.aTraining[attribute]):
+                        self.add_property(attribute, property)
+                    PBA *= self.PAB[attribute][property][yValue]
                 possibleResults[yValue] = PBA * PA
             result = max(possibleResults, key=lambda x: possibleResults[x])
             results.append(result)
         return n.array(results)
 
-    def add_property(self, atributo, property):
-        self.PAB[atributo][property] = {}
+    def add_property(self, attribute, property):
+        self.PAB[attribute][property] = {}
         for yValue in n.unique(self.bTraining):
-            self.PAB[atributo][property][yValue] = 0
+            self.PAB[attribute][property][yValue] = 0
             noOcorrenciasY = sum(self.bTraining == yValue)
             noOcorrenciasXY = 0
-            self.PAB[atributo][property][yValue] = (noOcorrenciasXY + self.alpha) / (noOcorrenciasY + (self.alpha * self.noProperties[atributo]))
-            
+            self.PAB[attribute][property][yValue] = (noOcorrenciasXY + self.alpha) / (noOcorrenciasY + (self.alpha * self.noProperties[attribute]))
+
     def accuracy_score(self, x, y):
         prev = self.predict(x)
         return round(float((sum(prev == y)) / float(len(y)) * 100), 2)
-    
+
     def precision_score(self, x, y):
         results = []
         prev = self.predict(x)
