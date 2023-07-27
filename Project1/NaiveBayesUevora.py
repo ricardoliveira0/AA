@@ -20,19 +20,14 @@ class NaiveBayesUevora:
         
     def fit(self, x, y):
         self.columns = list(x.columns) # Classes
-        # print(f'x.columns = {self.columns}')
         self.aTraining = x # Todas as classes excepto a última
-        # print(f'{self.aTraining}')
         self.bTraining = y # Apenas a última
-        # print(f'{self.bTraining}')
         self.sizeTraining = x.shape[0] # Nro de linhas
-        # print(f'{self.sizeTraining}')
         self.noColumns = x.shape[1] # Nro de classes
         for atributo in self.columns:
             self.PAB[atributo] = {}
             self.PA[atributo] = {}
             self.noProperties[atributo] = len(n.unique(self.aTraining[atributo]))
-            # print(f'{atributo} = {self.noProperties[atributo]}')
             
             for xValue in n.unique(self.aTraining[atributo]):
                 self.PA[atributo][xValue] = 0
