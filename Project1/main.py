@@ -9,7 +9,7 @@ file = p.read_csv("assets/breast-cancer-train.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
 nba.__init__(alpha)
-nba.fit(x, y) # gerar o classificador
+nba.fit(x, y) # generate the classifier
 
 file = p.read_csv("assets/breast-cancer-test.csv")
 x1 = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
@@ -26,7 +26,7 @@ file = p.read_csv("assets/breast-cancer-train2.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
 nba.__init__(alpha)
-nba.fit(x, y)
+nba.fit(x, y) # generate the classifier
 
 file = p.read_csv("assets/breast-cancer-test2.csv")
 x1 = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
@@ -42,9 +42,8 @@ file = p.read_csv("assets/weather-nominal.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
 nba.__init__(alpha)
-nba.fit(x, y)
+nba.fit(x, y) # generate the classifier
 
 x1 = [["overcast", "mild", "high", "TRUE"]]
-print("Previsão:")
 for q, r in zip(n.array(x1), nba.predict(x1)):
-    print(f'{q} --> {r}')
+    print(f'Previsão: {q} --> {r}')
