@@ -1,5 +1,7 @@
 import numpy as n
 import pandas as p
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 class NaiveBayesUevora:
     alpha = float
@@ -98,4 +100,3 @@ class NaiveBayesUevora:
             else:
                 results.append(vp / (vp + fp))
         return round(float(sum(results)/len(results)*100),2)
-                    

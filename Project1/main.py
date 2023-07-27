@@ -1,14 +1,15 @@
 import NaiveBayesUevora
 import numpy as n
 import pandas as p
+alpha = 1
 
 print("\t Teste1")
 nba = NaiveBayesUevora.NaiveBayesUevora()
 file = p.read_csv("assets/breast-cancer-train.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
-nba.__init__(1)
-nba.fit(x, y)
+nba.__init__(alpha)
+nba.fit(x, y) # gerar o classificador
 
 file = p.read_csv("assets/breast-cancer-test.csv")
 x1 = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
@@ -24,7 +25,7 @@ nba = NaiveBayesUevora.NaiveBayesUevora()
 file = p.read_csv("assets/breast-cancer-train2.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
-nba.__init__(1)
+nba.__init__(alpha)
 nba.fit(x, y)
 
 file = p.read_csv("assets/breast-cancer-test2.csv")
@@ -40,7 +41,7 @@ nba = NaiveBayesUevora.NaiveBayesUevora()
 file = p.read_csv("assets/weather-nominal.csv")
 x = file.drop([file.columns[-1]], axis=1) # drop last column | 1 for column
 y = file[file.columns[-1]]
-nba.__init__(1)
+nba.__init__(alpha)
 nba.fit(x, y)
 
 x1 = [["overcast", "mild", "high", "TRUE"]]
